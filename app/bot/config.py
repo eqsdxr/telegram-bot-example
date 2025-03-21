@@ -11,6 +11,8 @@ class Settings(BaseSettings):
     BOT_TOKEN: str
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
+    ATLAS_URI: str
+    DB_NAME: str
 
 
 @lru_cache(maxsize=1)  # Optimize performance by caching
