@@ -201,7 +201,8 @@ async def get_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def unknown(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(
-        chat_id=cast(Chat, update.effective_chat).id, text="Unknown command."
+        chat_id=cast(Chat, update.effective_chat).id,
+        text=app_settings.UNKNOWN_MESSAGE,
     )
 
 

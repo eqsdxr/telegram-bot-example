@@ -35,6 +35,8 @@ class Settings(BaseSettings):
         "\n/help - get help"
     )
 
+    UNKNOWN_MESSAGE: str = "Unknown command."
+
 
 @lru_cache(maxsize=1)  # Optimize performance by caching
 def get_settings():
