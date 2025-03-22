@@ -100,6 +100,38 @@ async def add_feed(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
+async def get_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_data = get_db_user(cast(User, update.effective_user))
+
+    if not user_data or "rss_list" not in user_data or not user_data["rss_list"]:
+        await context.bot.send_message(
+            chat_id=cast(Chat, update.effective_chat).id,
+            text="You have no RSS feeds added.",
+        )
+        return
+
+    messages = ["You have {} rss added.".format(len(user_data["rss_list"]))]
+    message = ""
+
+    for count, rss in enumerate(user_data["rss_list"]):
+        status = "\n{}. {}".format(
+            count + 1, rss["title"]
+        )  # Show count starting from 1
+
+        if len(message) + len(status) > 4000:
+            messages.append(message)
+
+        message += status
+
+    if message:
+        messages.append(message)
+
+    for msg in messages:
+        await context.bot.send_message(
+            chat_id=cast(Chat, update.effective_chat).id, text=msg
+        )
+
+
 async def unknown(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(
         chat_id=cast(Chat, update.effective_chat).id, text="Unknown command."
@@ -109,13 +141,15 @@ async def unknown(update: Update, context: ContextTypes.DEFAULT_TYPE):
 if __name__ == "__main__":
     application = ApplicationBuilder().token(app_settings.BOT_TOKEN).build()
     start_handler = CommandHandler("start", start)
-    get_help_handler = CommandHandler("help", start)
+    get_help_handler = CommandHandler("help", get_help)
     get_news_handler = CommandHandler("get", get_news)
     add_feed_handler = CommandHandler("add", add_feed)
+    get_status_handler = CommandHandler("status", get_status)
     unknown_handler = MessageHandler(filters.COMMAND, unknown)
     application.add_handler(start_handler)
     application.add_handler(get_help_handler)
     application.add_handler(get_news_handler)
     application.add_handler(add_feed_handler)
+    application.add_handler(get_status_handler)
     application.add_handler(unknown_handler)
     application.run_polling()

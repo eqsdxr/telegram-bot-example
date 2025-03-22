@@ -8,19 +8,30 @@ logger.add(stderr, format="{time} {level} {message}", level="INFO")
 
 
 class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
+
     BOT_TOKEN: str
 
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
     ATLAS_URI: str
     DB_NAME: str
 
     START_MESSAGE: str = (
         "Welcome to rss news reader bot"
-        "\nChoose the option:"
-        "\n/get {number} - scrap news"
-        "\n/add {rss_link} - add rss news source"
+        "\nChoose an option:"
+        "\n/get <number> - scrap <number> news"
+        "\n/add <rss_link> - add rss news source"
+        "\n/remove - remove feed"
+        "\n/status - get status"
+        "\n/help - get help"
     )
-    HELP_MESSAGE: str = ""
+
+    HELP_MESSAGE: str = (
+        "\n/get <number> - scrap <number> news"
+        "\n/add <rss_link> - add rss news source"
+        "\n/remove - remove feed"
+        "\n/status - get status"
+        "\n/help - get help"
+    )
 
 
 @lru_cache(maxsize=1)  # Optimize performance by caching
