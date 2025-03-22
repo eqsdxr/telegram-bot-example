@@ -17,13 +17,13 @@ from app.bot.feed import get_rss_data
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(
-        chat_id=cast(Chat, update.effective_chat).id,
-        text=(
-            "Welcome to rss news reader bot"
-            "\nChoose the option:"
-            "\n/get {number} - scrap news"
-            "\n/add {rss_link} - add rss news source"
-        ),
+        chat_id=cast(Chat, update.effective_chat).id, text=app_settings.START_MESSAGE
+    )
+
+
+async def get_help(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await context.bot.send_message(
+        chat_id=cast(Chat, update.effective_chat).id, text=app_settings.HELP_MESSAGE
     )
 
 
@@ -109,11 +109,12 @@ async def unknown(update: Update, context: ContextTypes.DEFAULT_TYPE):
 if __name__ == "__main__":
     application = ApplicationBuilder().token(app_settings.BOT_TOKEN).build()
     start_handler = CommandHandler("start", start)
-    help_handler = CommandHandler("help", start)
+    get_help_handler = CommandHandler("help", start)
     get_news_handler = CommandHandler("get", get_news)
     add_feed_handler = CommandHandler("add", add_feed)
     unknown_handler = MessageHandler(filters.COMMAND, unknown)
     application.add_handler(start_handler)
+    application.add_handler(get_help_handler)
     application.add_handler(get_news_handler)
     application.add_handler(add_feed_handler)
     application.add_handler(unknown_handler)

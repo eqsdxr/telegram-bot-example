@@ -14,6 +14,14 @@ class Settings(BaseSettings):
     ATLAS_URI: str
     DB_NAME: str
 
+    START_MESSAGE: str = (
+        "Welcome to rss news reader bot"
+        "\nChoose the option:"
+        "\n/get {number} - scrap news"
+        "\n/add {rss_link} - add rss news source"
+    )
+    HELP_MESSAGE: str = ""
+
 
 @lru_cache(maxsize=1)  # Optimize performance by caching
 def get_settings():
