@@ -187,8 +187,9 @@ async def get_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         if len(message) + len(status) > 4000:
             messages.append(message)
-
-        message += status
+            message = status
+        else:
+            message += status
 
     if message:
         messages.append(message)
