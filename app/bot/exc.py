@@ -4,3 +4,7 @@ class InvalidRSSURLError(Exception):
 
 class RSSAlreadyExist(Exception):
     pass
+
+
+class UnexpectedDeletionError(Exception):
+    pass
