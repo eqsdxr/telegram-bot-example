@@ -103,30 +103,18 @@ async def add_feed(update: Update, context: ContextTypes.DEFAULT_TYPE):
         add_rss_to_user(
             cast(User, update.effective_user), rss_url, feed.feed.title
         )
+        message = (
+            "RSS feed successfully added. Now you can access the latest news."
+        )
     except IndexError:
-        await context.bot.send_message(
-            chat_id=cast(Chat, update.effective_chat).id,
-            text="Provide RSS url.",
-        )
-        return
+        message = "Provide RSS url."
     except InvalidRSSURLError:
-        await context.bot.send_message(
-            chat_id=cast(Chat, update.effective_chat).id,
-            text="RSS url is invalid or broken.",
-        )
-        return
+        message = "RSS url is invalid or broken."
     except RSSAlreadyExist:
-        await context.bot.send_message(
-            chat_id=cast(Chat, update.effective_chat).id,
-            text="You have already subscribed to this RSS.",
-        )
-        return
+        message = "You have already subscribed to this RSS."
 
     await context.bot.send_message(
-        chat_id=cast(Chat, update.effective_chat).id,
-        text=(
-            "RSS feed successfully added. Now you can access the latest news."
-        ),
+        chat_id=cast(Chat, update.effective_chat).id, text=message
     )
 
 
