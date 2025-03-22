@@ -175,7 +175,9 @@ async def get_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         return
 
-    messages = ["You have {} rss added.".format(len(user_data["rss_list"]))]
+    messages = [
+        "You have {} RSS feeds added.".format(len(user_data["rss_list"]))
+    ]
     message = ""
 
     for count, rss in enumerate(user_data["rss_list"]):

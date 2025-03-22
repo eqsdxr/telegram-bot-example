@@ -9,6 +9,8 @@ dependencies = [
     "loguru>=0.7.3",
     "pydantic-settings>=2.8.1",
     "pymongo[srv]>=4.11.3",
+    "pytest-asyncio>=0.25.3",
+    "pytest>=8.3.5",
     "python-telegram-bot>=22.0",
 ]
 
