@@ -14,7 +14,7 @@ class Settings(BaseSettings):
 
     BOT_TOKEN: str
 
-    ATLAS_URI: str
+    ATLAS_URI: str  # MongoDB connection string
     DB_NAME: str
 
     START_MESSAGE: str = (
