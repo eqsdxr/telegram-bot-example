@@ -1,8 +1,8 @@
 An example of a telegram bot bulit with [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot), MongoDB, and Docker.
 
-**Try the bot**: [demo](https://t.me/demo_eqsdxr_bot). (turned off)
+~~**Try the bot**: [demo](https://t.me/demo_eqsdxr_bot).~~ (turned off)
 
-> Note: Response times may vary since the bot runs on a free plan.
+> ~~Note: Response times may vary since the bot runs on a free plan.~~
 
 Project highlights:
 - Built with [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot) framework
