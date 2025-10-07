@@ -5,8 +5,8 @@ from telegram import CallbackQuery, Chat, InlineKeyboardMarkup, User
 from telegram.ext import ContextTypes
 
 from app.bot.config import app_settings
-from app.bot import main
 from app.bot import exc
+from app import main
 
 
 @pytest.mark.asyncio
@@ -162,9 +162,7 @@ async def test_get_news_long_messages():
     mock_feed = feedparser.FeedParserDict(
         {
             "feed": feedparser.FeedParserDict({"title": "Test RSS Feed"}),
-            "entries": [
-                feedparser.FeedParserDict({"title": long_text, "link": link})
-            ]
+            "entries": [feedparser.FeedParserDict({"title": long_text, "link": link})]
             * 3,
         }
     )
@@ -175,9 +173,7 @@ async def test_get_news_long_messages():
     ):
         await main.get_news(update, context)
 
-    assert (
-        context.bot.send_message.call_count == 3
-    )  # Three split messages sent
+    assert context.bot.send_message.call_count == 3  # Three split messages sent
 
 
 def test_get_rss_data_valid():
@@ -198,9 +194,7 @@ def test_get_rss_data_valid():
 
 
 def test_get_rss_data_invalid():
-    mock_feed = feedparser.FeedParserDict(
-        {"bozo": 1}
-    )  # Simulating an invalid feed
+    mock_feed = feedparser.FeedParserDict({"bozo": 1})  # Simulating an invalid feed
 
     with (
         patch("feedparser.parse", return_value=mock_feed),
@@ -262,9 +256,7 @@ async def test_add_feed_invalid_url():
     context.args = ["https://invalid-rss.com/feed"]
     context.bot.send_message = AsyncMock()
 
-    with patch(
-        "app.bot.main.get_rss_data", side_effect=exc.InvalidRSSURLError
-    ):
+    with patch("app.bot.main.get_rss_data", side_effect=exc.InvalidRSSURLError):
         await main.add_feed(update, context)
 
     context.bot.send_message.assert_called_once_with(
@@ -351,9 +343,7 @@ async def test_remove_button_handler_success():
 
     query.answer.assert_called_once()
     mock_remove_rss.assert_called_once_with(update.effective_user, "Feed1")
-    query.edit_message_text.assert_called_once_with(
-        text="Successfully removed."
-    )
+    query.edit_message_text.assert_called_once_with(text="Successfully removed.")
 
 
 @pytest.mark.asyncio
@@ -371,9 +361,7 @@ async def test_remove_button_handler_value_error():
         await main.remove_button_handler(update, context)
 
     query.answer.assert_called_once()
-    query.edit_message_text.assert_called_once_with(
-        text="Error. Nothing was removed."
-    )
+    query.edit_message_text.assert_called_once_with(text="Error. Nothing was removed.")
 
 
 @pytest.mark.asyncio
@@ -388,9 +376,7 @@ async def test_remove_button_handler_unexpected_deletion():
     update.callback_query = query
     context = AsyncMock()
 
-    with patch(
-        "app.bot.main.remove_rss", side_effect=exc.UnexpectedDeletionError
-    ):
+    with patch("app.bot.main.remove_rss", side_effect=exc.UnexpectedDeletionError):
         await main.remove_button_handler(update, context)
 
     query.answer.assert_called_once()

@@ -48,9 +48,7 @@ async def get_help(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def get_news(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
-        amount = int(
-            cast(list[str], context.args)[0]
-        )  # Get user-specified news count
+        amount = int(cast(list[str], context.args)[0])  # Get user-specified news count
     except (IndexError, ValueError):
         await context.bot.send_message(
             chat_id=cast(Chat, update.effective_chat).id,
@@ -60,11 +58,7 @@ async def get_news(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     user_data = get_db_user(cast(User, update.effective_user))
 
-    if (
-        not user_data
-        or "rss_list" not in user_data
-        or not user_data["rss_list"]
-    ):
+    if not user_data or "rss_list" not in user_data or not user_data["rss_list"]:
         await context.bot.send_message(
             chat_id=cast(Chat, update.effective_chat).id,
             text="You have no RSS feeds added.",
@@ -100,12 +94,8 @@ async def add_feed(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         rss_url: str = cast(list[str], context.args)[0]
         feed = get_rss_data(rss_url)
-        add_rss_to_user(
-            cast(User, update.effective_user), rss_url, feed.feed.title
-        )
-        message = (
-            "RSS feed successfully added. Now you can access the latest news."
-        )
+        add_rss_to_user(cast(User, update.effective_user), rss_url, feed.feed.title)
+        message = "RSS feed successfully added. Now you can access the latest news."
     except IndexError:
         message = "Provide RSS url."
     except InvalidRSSURLError:
@@ -121,11 +111,7 @@ async def add_feed(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def remove_feed(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_data = get_db_user(cast(User, update.effective_user))
 
-    if (
-        not user_data
-        or "rss_list" not in user_data
-        or not user_data["rss_list"]
-    ):
+    if not user_data or "rss_list" not in user_data or not user_data["rss_list"]:
         await context.bot.send_message(
             chat_id=cast(Chat, update.effective_chat).id,
             text="You have no RSS feeds added.",
@@ -145,9 +131,7 @@ async def remove_feed(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-async def remove_button_handler(
-    update: Update, context: CallbackContext
-) -> None:
+async def remove_button_handler(update: Update, context: CallbackContext) -> None:
     query = update.callback_query
     await cast(CallbackQuery, query).answer()
     button_value = cast(CallbackQuery, query).data
@@ -164,20 +148,14 @@ async def remove_button_handler(
 async def get_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_data = get_db_user(cast(User, update.effective_user))
 
-    if (
-        not user_data
-        or "rss_list" not in user_data
-        or not user_data["rss_list"]
-    ):
+    if not user_data or "rss_list" not in user_data or not user_data["rss_list"]:
         await context.bot.send_message(
             chat_id=cast(Chat, update.effective_chat).id,
             text="You have no RSS feeds added.",
         )
         return
 
-    messages = [
-        "You have {} RSS feeds added.".format(len(user_data["rss_list"]))
-    ]
+    messages = ["You have {} RSS feeds added.".format(len(user_data["rss_list"]))]
     message = ""
 
     for count, rss in enumerate(user_data["rss_list"]):

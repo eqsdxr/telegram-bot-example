@@ -50,14 +50,10 @@ def remove_rss(user: User, rss_title: str):
         {"user_id": user.id}, {"$pull": {"rss_list": {"title": rss_title}}}
     )
     if result.modified_count == 0:
-        logger.warning(
-            f"No matching entry found for user {user.id}, nothing deleted."
-        )
+        logger.warning(f"No matching entry found for user {user.id}, nothing deleted.")
         raise ValueError("Nothing was deleted")
     elif result.modified_count > 1:
-        logger.warning(
-            f"User {user.id} had multiple matching entries removed."
-        )
+        logger.warning(f"User {user.id} had multiple matching entries removed.")
         raise UnexpectedDeletionError(
             f"User {user.id} had multiple matching entries removed."
         )
